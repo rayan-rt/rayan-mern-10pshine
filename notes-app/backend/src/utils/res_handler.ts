@@ -1,13 +1,13 @@
 export class ResponseHandler {
-  message: string;
   statusCode: number;
   data: any;
+  message: string;
   success: boolean;
 
-  constructor(message: string, statusCode: number = 200, data: any = {}) {
-    this.message = message;
+  constructor(statusCode: number, data: any, message: string = "Success") {
     this.statusCode = statusCode;
     this.data = data;
-    this.success = statusCode >= 200 && statusCode < 300;
+    this.message = message;
+    this.success = statusCode < 400;
   }
 }
