@@ -10,12 +10,12 @@ import mongoose from "mongoose";
 // ZOD schemas for input validation
 const noteCreateSchema = z.object({
   title: z.string().min(3).max(100),
-  content: z.string(),
+  content: z.string().min(3),
 });
 
 const noteUpdateSchema = z.object({
   title: z.string().min(3).max(100),
-  content: z.string(),
+  content: z.string().min(3),
   isPinned: z.boolean().optional(),
 });
 
