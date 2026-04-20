@@ -8,6 +8,7 @@ import { z } from "zod";
 import crypto from "crypto";
 // --
 
+// ZOD schemas for input validation
 const signupSchema = z.object({
   username: z.string().min(3).max(20),
   email: z.string().email(),
@@ -31,6 +32,7 @@ const cookieOptions = {
   sameSite: "strict" as const,
 };
 
+// controller functions
 const registerUser: RequestHandler = asyncHandler(
   async (req: Request, res: Response) => {
     const validatedData = signupSchema.parse(req.body);
