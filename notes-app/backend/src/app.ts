@@ -16,8 +16,10 @@ app.use(reqLogger);
 
 // routes
 import { router as userRoutes } from "./routes/user.route.js";
+import { router as noteRoutes } from "./routes/note.route.js";
 
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/notes", noteRoutes);
 
 // --
 app.get("/", (_, res: Response) => {
