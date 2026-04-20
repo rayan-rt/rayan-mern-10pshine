@@ -42,4 +42,9 @@ const sendResetPasswordEmail = async (email: string, resetLink: string) => {
   await transporter.sendMail(mailOptions);
 };
 
-export { sendVerificationEmail, sendResetPasswordEmail };
+const mailHelper = {
+  sendVerificationEmail,
+  sendResetPasswordEmail,
+};
+
+export { mailHelper };

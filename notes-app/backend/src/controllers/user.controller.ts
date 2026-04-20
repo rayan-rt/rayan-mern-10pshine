@@ -3,10 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ResponseHandler } from "../utils/res_handler.js";
 import { ErrorHandler } from "../utils/err_handler.js";
 import { User } from "../models/user.model.js";
-import {
-  sendResetPasswordEmail,
-  sendVerificationEmail,
-} from "../utils/mail.utils.js";
+import { mailHelper } from "../utils/mail.utils.js";
 import { z } from "zod";
 import crypto from "crypto";
 // --
@@ -60,7 +57,7 @@ const registerUser: RequestHandler = asyncHandler(
       verificationTokenExpiry: otpExpiry,
     });
 
-    await sendVerificationEmail(user.email, otp);
+    await mailHelper.sendVerificationEmail(user.email, otp);
 
     res
       .status(201)
@@ -123,7 +120,24 @@ const loginUser: RequestHandler = asyncHandler(
     }
 
     if (!user.isVerified) {
-      throw new ErrorHandler(403, "Please verify your email first");
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const otpExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+      user.verificationToken = otp;
+      user.verificationTokenExpiry = otpExpiry;
+      await user.save();
+
+      await mailHelper.sendVerificationEmail(user.email, otp);
+
+      return res
+        .status(403)
+        .json(
+          new ResponseHandler(
+            403,
+            { _id: user._id, username: user.username, email: user.email },
+            "Please verify your email first. A new verification code has been sent.",
+          ),
+        );
     }
 
     const isPasswordValid = await (user as any).isPasswordCorrect(password);
@@ -196,7 +210,7 @@ const forgotPassword: RequestHandler = asyncHandler(
 
     const resetLink = `${process.env["FRONTEND_URL"]}/reset-password/${resetToken}`;
 
-    await sendResetPasswordEmail(user.email, resetLink);
+    await mailHelper.sendResetPasswordEmail(user.email, resetLink);
 
     res
       .status(200)
@@ -243,11 +257,16 @@ const resetPassword: RequestHandler = asyncHandler(
 
 const changePassword: RequestHandler = asyncHandler(
   async (req: Request, res: Response) => {
-    const user = (req as any).user;
     const { oldPassword, newPassword } = req.body;
 
     if (!oldPassword?.trim() || !newPassword?.trim()) {
       throw new ErrorHandler(400, "Old and new password are required");
+    }
+
+    const user = await User.findById((req as any).user?._id);
+
+    if (!user) {
+      throw new ErrorHandler(404, "User does not exist");
     }
 
     const isPasswordValid = await (user as any).isPasswordCorrect(oldPassword);
