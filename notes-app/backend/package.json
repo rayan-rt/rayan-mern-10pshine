@@ -8,26 +8,45 @@
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts",
     "build": "tsc -p tsconfig.json",
-    "dev:tscwatch": "tsc --watch"
+    "dev:tscwatch": "tsc --watch",
+    "test": "mocha",
+    "test:coverage": "c8 --reporter=lcov --reporter=text mocha"
   },
   "keywords": [],
   "author": "rayan-rt",
   "license": "ISC",
   "packageManager": "pnpm@10.29.3",
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/chai": "^5.2.3",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/mocha": "^10.0.10",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^25.6.0",
+    "@types/nodemailer": "^8.0.0",
+    "@types/sinon": "^21.0.1",
+    "c8": "^11.0.0",
+    "chai": "^6.2.2",
+    "mocha": "^11.7.5",
+    "sinon": "^21.1.2",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.4.1",
+    "nodemailer": "^8.0.5",
     "pino": "^10.3.1",
     "pino-http": "^11.0.0",
-    "pino-pretty": "^13.1.3"
+    "pino-pretty": "^13.1.3",
+    "zod": "^4.3.6"
   }
 }
