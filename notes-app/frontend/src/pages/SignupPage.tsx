@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Form } from "../components";
+import { SignupForm } from "../components";
 
 export default function SignupPage() {
   return (
@@ -19,7 +19,7 @@ export default function SignupPage() {
             </p>
           </div>
 
-          <Form type="signup" />
+          <SignupForm />
 
           <div className="mt-8 pt-6 border-t border-slate-100 text-center animate-in fade-in slide-in-from-bottom-2 duration-1000 delay-300">
             <p className="text-slate-500 font-medium">

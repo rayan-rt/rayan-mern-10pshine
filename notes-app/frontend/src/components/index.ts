@@ -1,4 +1,4 @@
-import Form from "./Form";
 import Navbar from "./Navbar";
+export * from "./auth";
 
-export { Form, Navbar };
+export { Navbar };

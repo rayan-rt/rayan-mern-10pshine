@@ -1,4 +1,4 @@
-import { LogOut, User, StickyNote, Loader2 } from "lucide-react";
+import { LogOut, StickyNote, Loader2 } from "lucide-react";
 import { useUserContext } from "../contexts/user.context";
 import { cn } from "../utils/cn";
 import { useState } from "react";
