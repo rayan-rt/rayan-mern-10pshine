@@ -108,6 +108,7 @@ export default function ResetPasswordForm() {
             {...register("password")}
             type={showPassword ? "text" : "password"}
             placeholder="••••••••"
+            required
             className={cn(
               "block w-full pl-10 pr-10 py-3 bg-white/50 backdrop-blur-sm border border-slate-200 rounded-2xl",
               "focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all",
@@ -144,6 +145,7 @@ export default function ResetPasswordForm() {
             {...register("confirmPassword")}
             type={showPassword ? "text" : "password"}
             placeholder="••••••••"
+            required
             className={cn(
               "block w-full pl-10 pr-3 py-3 bg-white/50 backdrop-blur-sm border border-slate-200 rounded-2xl",
               "focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all",
