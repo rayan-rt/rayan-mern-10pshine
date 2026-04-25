@@ -26,7 +26,10 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const checkAuth = useCallback(async () => {
     try {
-      const response = await fetch(`${ENV_VARS.BACKEND_URL}/api/v1/user/me`);
+      const response = await fetch(`${ENV_VARS.BACKEND_URL}/api/v1/users/me`, {
+        credentials: "include",
+      });
+
       if (response.ok) {
         const result: IAuthResponse = await response.json();
         if (result.success && result.data) {
@@ -45,15 +48,20 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     async (data: IRegisterCredentials): Promise<IAuthResponse> => {
       try {
         setLoading(true);
+        console.log("req started");
+        console.log(ENV_VARS.BACKEND_URL);
         const response = await fetch(
-          `${ENV_VARS.BACKEND_URL}/api/v1/user/signup`,
+          `${ENV_VARS.BACKEND_URL}/api/v1/users/signup`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
+            credentials: "include",
           },
         );
+
         const result: IAuthResponse = await response.json();
+        console.log(result);
         if (!response.ok) throw new Error(result.message || "Signup failed");
         return result;
       } catch (err: unknown) {
@@ -73,13 +81,15 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
       try {
         setLoading(true);
         const response = await fetch(
-          `${ENV_VARS.BACKEND_URL}/api/v1/user/verify-email`,
+          `${ENV_VARS.BACKEND_URL}/api/v1/users/verify-email`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
+            credentials: "include",
           },
         );
+
         const result: IAuthResponse = await response.json();
         if (!response.ok)
           throw new Error(result.message || "Verification failed");
@@ -101,16 +111,22 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
       try {
         setLoading(true);
         const response = await fetch(
-          `${ENV_VARS.BACKEND_URL}/api/v1/user/login`,
+          `${ENV_VARS.BACKEND_URL}/api/v1/users/login`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
+            credentials: "include",
           },
         );
+
         const result: IAuthResponse = await response.json();
-        if (!response.ok) throw new Error(result.message || "Login failed");
-        if (result.data) setUser(result.data);
+        console.log(result);
+
+        if ((response.ok || response.status === 403) && result.data) {
+          setUser(result.data);
+        }
+
         return result;
       } catch (err: unknown) {
         const errorMessage =
@@ -126,9 +142,11 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = useCallback(async (): Promise<void> => {
     try {
-      await fetch(`${ENV_VARS.BACKEND_URL}/api/v1/user/logout`, {
+      await fetch(`${ENV_VARS.BACKEND_URL}/api/v1/users/logout`, {
         method: "GET",
+        credentials: "include",
       });
+
       setUser(null);
     } catch (err: unknown) {
       logger.error("Logout failed:", err);
@@ -139,13 +157,15 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     async (id: string, data: IUpdateProfileData): Promise<IAuthResponse> => {
       try {
         const response = await fetch(
-          `${ENV_VARS.BACKEND_URL}/api/v1/user/${id}`,
+          `${ENV_VARS.BACKEND_URL}/api/v1/users/${id}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
+            credentials: "include",
           },
         );
+
         const result: IAuthResponse = await response.json();
         if (result.success && result.data) setUser(result.data);
         return result;
@@ -162,13 +182,15 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     async (email: string): Promise<IAuthResponse> => {
       try {
         const response = await fetch(
-          `${ENV_VARS.BACKEND_URL}/api/v1/user/forgot-password`,
+          `${ENV_VARS.BACKEND_URL}/api/v1/users/forgot-password`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email }),
+            credentials: "include",
           },
         );
+
         return await response.json();
       } catch (err: unknown) {
         const errorMessage =
@@ -183,13 +205,15 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     async (token: string, password: string): Promise<IAuthResponse> => {
       try {
         const response = await fetch(
-          `${ENV_VARS.BACKEND_URL}/api/v1/user/reset-password/${token}`,
+          `${ENV_VARS.BACKEND_URL}/api/v1/users/reset-password/${token}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ password }),
+            credentials: "include",
           },
         );
+
         return await response.json();
       } catch (err: unknown) {
         const errorMessage =
@@ -204,13 +228,15 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     async (data: IChangePasswordData): Promise<IAuthResponse> => {
       try {
         const response = await fetch(
-          `${ENV_VARS.BACKEND_URL}/api/v1/user/change-password`,
+          `${ENV_VARS.BACKEND_URL}/api/v1/users/change-password`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
+            credentials: "include",
           },
         );
+
         return await response.json();
       } catch (err: unknown) {
         const errorMessage =

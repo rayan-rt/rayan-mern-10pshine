@@ -1,6 +1,5 @@
 import React from "react";
 import { logger } from "./utils/logger";
-import { UserProvider } from "./contexts/user.provider";
 import { useUserContext } from "./contexts/user.context";
 import {
   BrowserRouter as Router,
@@ -8,6 +7,15 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import {
+  ForgotPasswordPage,
+  HomePage,
+  LoginPage,
+  ResetPasswordPage,
+  SignupPage,
+  VerifyEmailPage,
+} from "./pages";
+import { Navbar } from "./components";
 // --
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -21,38 +29,84 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
+  if (!user) return <Navigate to="/login" replace />;
+  if (!user.isVerified) return <Navigate to="/verify-email" replace />;
 
   return <>{children}</>;
 };
 
+const PublicRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useUserContext();
+
+  if (loading) return null;
+  if (!user) return <>{children}</>;
+
+  return <Navigate to={user.isVerified ? "/" : "/verify-email"} replace />;
+};
+
 function App() {
+  const { user } = useUserContext();
+
   React.useEffect(() => {
     logger.info("App component mounted");
   }, []);
 
   return (
     <Router>
-      <UserProvider>
-        <div className="min-h-screen bg-slate-50 p-8">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <h1 className="text-3xl font-bold text-blue-600">
-                    Dashboard - Welcome to your Notes
-                  </h1>
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/login" element={<div>Login Page Mock</div>} />
-            <Route path="/signup" element={<div>Signup Page Mock</div>} />
-          </Routes>
-        </div>
-      </UserProvider>
+      <div className="min-h-screen w-[90%] mx-auto bg-linear-to-br from-blue-200 to-blue-400 p-8 shadow-lg">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <LoginPage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <PublicRoute>
+                <SignupPage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/verify-email"
+            element={
+              user?.isVerified ? (
+                <Navigate to="/" replace />
+              ) : (
+                <VerifyEmailPage />
+              )
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <PublicRoute>
+                <ForgotPasswordPage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/reset-password/:token"
+            element={
+              <PublicRoute>
+                <ResetPasswordPage />
+              </PublicRoute>
+            }
+          />
+        </Routes>
+      </div>
     </Router>
   );
 }
