@@ -54,6 +54,8 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen w-[90%] mx-auto bg-linear-to-br from-blue-200 to-blue-400 p-8 shadow-lg">
+        {user && user.isVerified && <Navbar />}
+
         <Routes>
           <Route
             path="/"
