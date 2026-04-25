@@ -29,7 +29,7 @@ const verifyEmailSchema = z.object({
 const cookieOptions = {
   httpOnly: true,
   secure: process.env["NODE_ENV"] === "production",
-  sameSite: "strict" as const,
+  sameSite: "lax" as const,
 };
 
 // controller functions
@@ -61,15 +61,18 @@ const registerUser: RequestHandler = asyncHandler(
 
     await mailHelper.sendVerificationEmail(user.email, otp);
 
-    res
-      .status(201)
-      .json(
-        new ResponseHandler(
-          201,
-          { _id: user._id, username: user.username, email: user.email },
-          "User registered! Please check your email for verification code.",
-        ),
-      );
+    res.status(201).json(
+      new ResponseHandler(
+        201,
+        {
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          isVerified: user.isVerified,
+        },
+        "User registered! Please check your email for verification code.",
+      ),
+    );
   },
 );
 
@@ -104,7 +107,13 @@ const verifyEmail: RequestHandler = asyncHandler(
       .json(
         new ResponseHandler(
           200,
-          { _id: user._id, username: user.username, email: user.email },
+          {
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            isVerified: user.isVerified,
+          },
+
           "Email verified successfully!",
         ),
       );
@@ -131,15 +140,18 @@ const loginUser: RequestHandler = asyncHandler(
 
       await mailHelper.sendVerificationEmail(user.email, otp);
 
-      return res
-        .status(403)
-        .json(
-          new ResponseHandler(
-            403,
-            { _id: user._id, username: user.username, email: user.email },
-            "Please verify your email first. A new verification code has been sent.",
-          ),
-        );
+      return res.status(403).json(
+        new ResponseHandler(
+          403,
+          {
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            isVerified: user.isVerified,
+          },
+          "Please verify your email first. A new verification code has been sent.",
+        ),
+      );
     }
 
     const isPasswordValid = await (user as any).isPasswordCorrect(password);
@@ -154,17 +166,21 @@ const loginUser: RequestHandler = asyncHandler(
     user.refreshToken = refreshToken;
     await user.save();
 
-    res
-      .status(200)
-      .cookie("accessToken", accessToken, cookieOptions)
-      .cookie("refreshToken", refreshToken, cookieOptions)
-      .json(
-        new ResponseHandler(
-          200,
-          { _id: user._id, username: user.username, email: user.email },
-          "User logged in successfully!",
-        ),
-      );
+    res.cookie("accessToken", accessToken, cookieOptions);
+    res.cookie("refreshToken", refreshToken, cookieOptions);
+
+    res.status(200).json(
+      new ResponseHandler(
+        200,
+        {
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          isVerified: user.isVerified,
+        },
+        "User logged in successfully!",
+      ),
+    );
   },
 );
 
@@ -220,7 +236,7 @@ const forgotPassword: RequestHandler = asyncHandler(
         new ResponseHandler(
           200,
           {},
-          "Forgot password email sent successfully!",
+          "A Reset password email link sent successfully!",
         ),
       );
   },
@@ -247,8 +263,8 @@ const resetPassword: RequestHandler = asyncHandler(
     }
 
     user.passwordHash = password; // hashed in pre-save hook
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpiry = undefined;
+    user.resetPasswordToken = "";
+    user.resetPasswordExpiry = new Date(Date.now());
     await user.save();
 
     res
@@ -296,15 +312,19 @@ const getCurrentUser: RequestHandler = asyncHandler(
   async (req: Request, res: Response) => {
     const user = (req as any).user;
 
-    res
-      .status(200)
-      .json(
-        new ResponseHandler(
-          200,
-          { _id: user._id, username: user.username, email: user.email },
-          "Current user fetched successfully!",
-        ),
-      );
+    res.status(200).json(
+      new ResponseHandler(
+        200,
+        {
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          isVerified: user.isVerified,
+        },
+
+        "Current user fetched successfully!",
+      ),
+    );
   },
 );
 
@@ -318,15 +338,19 @@ const getUserById: RequestHandler = asyncHandler(
       throw new ErrorHandler(404, "User does not exist");
     }
 
-    res
-      .status(200)
-      .json(
-        new ResponseHandler(
-          200,
-          { _id: user._id, username: user.username, email: user.email },
-          "User fetched successfully!",
-        ),
-      );
+    res.status(200).json(
+      new ResponseHandler(
+        200,
+        {
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          isVerified: user.isVerified,
+        },
+
+        "User fetched successfully!",
+      ),
+    );
   },
 );
 
@@ -349,15 +373,19 @@ const updateUser: RequestHandler = asyncHandler(
       throw new ErrorHandler(404, "User does not exist");
     }
 
-    res
-      .status(200)
-      .json(
-        new ResponseHandler(
-          200,
-          { _id: user._id, username: user.username, email: user.email },
-          "User updated successfully!",
-        ),
-      );
+    res.status(200).json(
+      new ResponseHandler(
+        200,
+        {
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          isVerified: user.isVerified,
+        },
+
+        "User updated successfully!",
+      ),
+    );
   },
 );
 
