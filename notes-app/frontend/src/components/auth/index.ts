@@ -3,6 +3,7 @@ import SignupForm from "./SignupForm";
 import VerifyEmailForm from "./VerifyEmailForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import ResetPasswordForm from "./ResetPasswordForm";
+import LogoutButton from "./LogoutButton";
 
 export {
   LoginForm,
@@ -10,4 +11,5 @@ export {
   VerifyEmailForm,
   ForgotPasswordForm,
   ResetPasswordForm,
+  LogoutButton,
 };

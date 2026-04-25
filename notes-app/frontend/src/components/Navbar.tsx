@@ -1,22 +1,9 @@
-import { LogOut, StickyNote, Loader2 } from "lucide-react";
+import { StickyNote } from "lucide-react";
 import { useUserContext } from "../contexts/user.context";
-import { cn } from "../utils/cn";
-import { useState } from "react";
+import { LogoutButton } from "./auth";
 
 export default function Navbar() {
-  const { user, logout } = useUserContext();
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
-
-  const handleLogout = async () => {
-    try {
-      setIsLoggingOut(true);
-      await logout();
-    } catch (error) {
-      console.error("Logout failed", error);
-    } finally {
-      setIsLoggingOut(false);
-    }
-  };
+  const { user } = useUserContext();
 
   if (!user) return null;
 
@@ -37,32 +24,7 @@ export default function Navbar() {
         <div className="flex items-center gap-4 md:gap-8">
           <div className="w-px h-8 bg-slate-200 hidden md:block" />
 
-          {/* Logout Button */}
-          <button
-            onClick={handleLogout}
-            disabled={isLoggingOut}
-            className={cn(
-              "group relative flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all transform active:scale-95",
-              "bg-red-400 text-white hover:bg-red-600",
-              "shadow-lg shadow-slate-900/10 hover:shadow-red-500/30",
-              "disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden",
-            )}
-          >
-            {isLoggingOut ? (
-              <Loader2 size={18} className="animate-spin" />
-            ) : (
-              <>
-                <LogOut
-                  size={18}
-                  className="group-hover:translate-x-1 transition-transform"
-                />
-                <span className="hidden sm:inline">Logout</span>
-              </>
-            )}
-
-            {/* Background shimmer */}
-            <div className="absolute inset-0 bg-white/10 translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
-          </button>
+          <LogoutButton />
         </div>
       </div>
     </nav>
