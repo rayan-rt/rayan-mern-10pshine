@@ -3,6 +3,8 @@ type IUser = {
   username: string;
   email: string;
   isVerified: boolean;
+  notesCount?: number;
+  pinnedNotesCount?: number;
   createdAt?: string;
   updatedAt?: string;
 };
@@ -47,13 +49,11 @@ type IUserContext = {
   login: (data: ILoginCredentials) => Promise<IAuthResponse>;
   logout: () => Promise<void>;
   verifyEmail: (data: IVerifyEmailCredentials) => Promise<IAuthResponse>;
-  updateProfile: (
-    id: string,
-    data: IUpdateProfileData,
-  ) => Promise<IAuthResponse>;
+  updateProfile: (data: IUpdateProfileData) => Promise<IAuthResponse>;
   forgotPassword: (email: string) => Promise<IAuthResponse>;
   resetPassword: (token: string, password: string) => Promise<IAuthResponse>;
   changePassword: (data: IChangePasswordData) => Promise<IAuthResponse>;
+  deleteUser: () => Promise<IAuthResponse>;
 };
 
 export type {
