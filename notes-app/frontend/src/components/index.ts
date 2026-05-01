@@ -1,4 +1,6 @@
 import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
+
 export * from "./auth";
 
-export { Navbar };
+export { Navbar, Sidebar };
