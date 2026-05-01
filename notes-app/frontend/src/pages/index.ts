@@ -5,6 +5,8 @@ import VerifyEmailPage from "./VerifyEmailPage";
 import ForgotPasswordPage from "./ForgotPasswordPage";
 import ResetPasswordPage from "./ResetPasswordPage";
 
+import ProfilePage from "./ProfilePage";
+
 export {
   SignupPage,
   HomePage,
@@ -12,4 +14,5 @@ export {
   VerifyEmailPage,
   ForgotPasswordPage,
   ResetPasswordPage,
+  ProfilePage,
 };

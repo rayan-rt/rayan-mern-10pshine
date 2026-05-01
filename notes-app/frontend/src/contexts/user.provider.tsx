@@ -154,10 +154,10 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const updateProfile = useCallback(
-    async (id: string, data: IUpdateProfileData): Promise<IAuthResponse> => {
+    async (data: IUpdateProfileData): Promise<IAuthResponse> => {
       try {
         const response = await fetch(
-          `${ENV_VARS.BACKEND_URL}/api/v1/users/${id}`,
+          `${ENV_VARS.BACKEND_URL}/api/v1/users/profile`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -247,6 +247,23 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     [],
   );
 
+  const deleteUser = useCallback(async (): Promise<IAuthResponse> => {
+    try {
+      const response = await fetch(
+        `${ENV_VARS.BACKEND_URL}/api/v1/users/profile`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        },
+      );
+
+      return await response.json();
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Delete failed";
+      return { success: false, message: errorMessage };
+    }
+  }, []);
+
   useEffect(() => {
     let isMounted = true;
     const initAuth = async () => {
@@ -282,6 +299,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
       forgotPassword,
       resetPassword,
       changePassword,
+      deleteUser,
     }),
     [
       user,
@@ -295,6 +313,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
       forgotPassword,
       resetPassword,
       changePassword,
+      deleteUser,
     ],
   );
 

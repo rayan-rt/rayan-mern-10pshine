@@ -3,6 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ResponseHandler } from "../utils/res_handler.js";
 import { ErrorHandler } from "../utils/err_handler.js";
 import { User } from "../models/user.model.js";
+import { Note } from "../models/note.model.js";
 import { mailHelper } from "../utils/mail.utils.js";
 import { z } from "zod";
 import crypto from "crypto";
@@ -312,6 +313,12 @@ const getCurrentUser: RequestHandler = asyncHandler(
   async (req: Request, res: Response) => {
     const user = (req as any).user;
 
+    const notesCount = await Note.countDocuments({ user: user._id });
+    const pinnedNotesCount = await Note.countDocuments({
+      user: user._id,
+      isPinned: true,
+    });
+
     res.status(200).json(
       new ResponseHandler(
         200,
@@ -320,6 +327,8 @@ const getCurrentUser: RequestHandler = asyncHandler(
           username: user.username,
           email: user.email,
           isVerified: user.isVerified,
+          notesCount,
+          pinnedNotesCount,
         },
 
         "Current user fetched successfully!",
@@ -356,7 +365,7 @@ const getUserById: RequestHandler = asyncHandler(
 
 const updateUser: RequestHandler = asyncHandler(
   async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const id = (req as any).user?._id;
     const { username } = req.body;
 
     if (!username?.trim()) {
@@ -391,7 +400,7 @@ const updateUser: RequestHandler = asyncHandler(
 
 const deleteUser: RequestHandler = asyncHandler(
   async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const id = (req as any).user?._id;
 
     const user = await User.findById(id);
 
@@ -400,6 +409,7 @@ const deleteUser: RequestHandler = asyncHandler(
     }
 
     // user's associated notes also delete
+    await Note.deleteMany({ user: id });
 
     await User.findByIdAndDelete(id);
 

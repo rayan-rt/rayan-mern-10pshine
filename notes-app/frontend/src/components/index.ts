@@ -1,4 +1,7 @@
 import Navbar from "./Navbar";
-export * from "./auth";
+import Sidebar from "./Sidebar";
 
-export { Navbar };
+export * from "./auth";
+export * from "./profile";
+
+export { Navbar, Sidebar };

@@ -27,7 +27,7 @@ export default function LogoutButton({ className }: LogoutButtonProps) {
       onClick={handleLogout}
       disabled={isLoggingOut}
       className={cn(
-        "group relative flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all transform active:scale-95",
+        "group relative flex items-center gap-2 px-4 py-1.5 rounded-2xl font-bold transition-all transform active:scale-95",
         "bg-red-500 text-white hover:bg-red-600",
         "shadow-lg shadow-red-500/10 hover:shadow-red-500/30",
         "disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden",
@@ -45,9 +45,6 @@ export default function LogoutButton({ className }: LogoutButtonProps) {
           <span className="hidden sm:inline">Logout</span>
         </>
       )}
-
-      {/* Background shimmer */}
-      <div className="absolute inset-0 bg-white/10 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 pointer-events-none" />
     </button>
   );
 }

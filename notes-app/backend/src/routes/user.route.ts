@@ -32,6 +32,11 @@ router.route("/change-password").post(isAuthenticated, changePassword);
 
 router.route("/me").get(isAuthenticated, getCurrentUser);
 
-router.route("/:id").get(getUserById).put(updateUser).delete(deleteUser);
+router
+  .route("/profile")
+  .put(isAuthenticated, updateUser)
+  .delete(isAuthenticated, deleteUser);
+
+router.route("/:id").get(getUserById);
 
 export { router };

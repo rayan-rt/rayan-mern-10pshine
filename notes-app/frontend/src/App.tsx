@@ -11,11 +11,12 @@ import {
   ForgotPasswordPage,
   HomePage,
   LoginPage,
+  ProfilePage,
   ResetPasswordPage,
   SignupPage,
   VerifyEmailPage,
 } from "./pages";
-import { Navbar } from "./components";
+import { ChangePasswordForm, Navbar, UpdateUsernameForm } from "./components";
 // --
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -105,6 +106,30 @@ function App() {
               <PublicRoute>
                 <ResetPasswordPage />
               </PublicRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/update-username"
+            element={
+              <ProtectedRoute>
+                <UpdateUsernameForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/change-password"
+            element={
+              <ProtectedRoute>
+                <ChangePasswordForm />
+              </ProtectedRoute>
             }
           />
         </Routes>
