@@ -18,6 +18,7 @@ import {
 } from "./pages";
 import { ChangePasswordForm, Navbar, UpdateUsernameForm } from "./components";
 import CreateNotePage from "./pages/CreateNotePage";
+import NotesPage from "./pages/NotesPage";
 // --
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -138,6 +139,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateNotePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notes"
+            element={
+              <ProtectedRoute>
+                <NotesPage />
               </ProtectedRoute>
             }
           />
