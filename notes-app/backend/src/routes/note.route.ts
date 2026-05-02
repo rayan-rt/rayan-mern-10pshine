@@ -16,6 +16,6 @@ router.use(isAuthenticated);
 
 router.route("/").post(createNote).get(getAllNotes);
 router.route("/:noteId").get(getNoteById).put(updateNote).delete(deleteNote);
-router.route("/:noteId/pin").put(togglePin);
+router.route("/pin/:noteId").put(togglePin);
 
 export { router };
