@@ -5,10 +5,14 @@ import { useNoteContext } from "../../contexts/note.context";
 import { Link } from "react-router-dom";
 
 export default function NoteCard({ note }: Readonly<{ note: INote }>) {
-  const { togglePin } = useNoteContext();
+  const { togglePin, deleteNote } = useNoteContext();
 
   const handlePin = async () => {
     await togglePin(note._id, !note.isPinned);
+  };
+
+  const handleDelete = async () => {
+    await deleteNote(note._id);
   };
 
   // Human-readable generic date formatter
@@ -74,6 +78,7 @@ export default function NoteCard({ note }: Readonly<{ note: INote }>) {
             <Edit3 className="w-4 h-4" />
           </Link>
           <button
+            onClick={handleDelete}
             className="p-1.5 text-gray-400 rounded-lg focus:outline-none cursor-default"
             title="Delete Note"
           >
