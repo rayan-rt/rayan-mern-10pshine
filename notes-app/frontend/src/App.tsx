@@ -17,6 +17,7 @@ import {
   VerifyEmailPage,
 } from "./pages";
 import { ChangePasswordForm, Navbar, UpdateUsernameForm } from "./components";
+import CreateNotePage from "./pages/CreateNotePage";
 // --
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -129,6 +130,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ChangePasswordForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/create-note"
+            element={
+              <ProtectedRoute>
+                <CreateNotePage />
               </ProtectedRoute>
             }
           />
