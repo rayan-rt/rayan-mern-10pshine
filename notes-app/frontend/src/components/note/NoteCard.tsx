@@ -1,8 +1,16 @@
 import { Trash2, Edit3, Pin, Calendar } from "lucide-react";
 import type { INote } from "../../types/note.types";
 import DOMPurify from "dompurify";
+import { useNoteContext } from "../../contexts/note.context";
+import { Link } from "react-router-dom";
 
 export default function NoteCard({ note }: Readonly<{ note: INote }>) {
+  const { togglePin } = useNoteContext();
+
+  const handlePin = async () => {
+    await togglePin(note._id, !note.isPinned);
+  };
+
   // Human-readable generic date formatter
   const dateFormatted = new Date(note.updatedAt).toLocaleDateString("en-US", {
     month: "short",
@@ -27,6 +35,7 @@ export default function NoteCard({ note }: Readonly<{ note: INote }>) {
           {note.title}
         </h3>
         <button
+          onClick={handlePin}
           className={`p-1.5 rounded-full transition-colors shrink-0 ${
             note.isPinned ? "text-blue-600 bg-blue-50" : "text-gray-400"
           }`}
@@ -58,12 +67,12 @@ export default function NoteCard({ note }: Readonly<{ note: INote }>) {
           {dateFormatted}
         </div>
         <div className="flex items-center gap-1.5">
-          <button
+          <Link
+            to={`/edit-note/${note._id}`}
             className="p-1.5 text-gray-400 rounded-lg focus:outline-none cursor-default"
-            title="Edit Note"
           >
             <Edit3 className="w-4 h-4" />
-          </button>
+          </Link>
           <button
             className="p-1.5 text-gray-400 rounded-lg focus:outline-none cursor-default"
             title="Delete Note"
