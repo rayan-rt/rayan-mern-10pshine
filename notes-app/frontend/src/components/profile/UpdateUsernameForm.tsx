@@ -56,10 +56,14 @@ export default function UpdateUsernameForm() {
 
         <form onSubmit={handleUpdateUsername} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-700 ml-1">
+            <label
+              htmlFor="newUsername"
+              className="text-sm font-bold text-slate-700 ml-1"
+            >
               New Username
             </label>
             <input
+              id="newUsername"
               type="text"
               value={newUsername}
               onChange={(e) => setNewUsername(e.target.value)}

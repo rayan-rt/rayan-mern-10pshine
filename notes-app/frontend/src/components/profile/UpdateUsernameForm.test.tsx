@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { BrowserRouter } from "react-router-dom";
 import UpdateUsernameForm from "./UpdateUsernameForm";
@@ -22,7 +22,6 @@ describe("UpdateUsernameForm", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.useFakeTimers();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (useUserContext as any).mockReturnValue({
       user: { _id: "1", username: "testuser" },
@@ -55,12 +54,13 @@ describe("UpdateUsernameForm", () => {
     // The button disables if identical to current username, "existinguser" is fine.
     fireEvent.click(screen.getByRole("button", { name: /Update Username/i }));
 
-    await waitFor(() => {
+    await vi.waitFor(() => {
       expect(screen.getByText("Username already exists")).toBeInTheDocument();
     });
   });
 
   it("2. pass case: updates successfully and navigates", async () => {
+    vi.useFakeTimers();
     mockUpdateProfile.mockResolvedValue({
       success: true,
       message: "Username updated successfully",
@@ -72,7 +72,7 @@ describe("UpdateUsernameForm", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: /Update Username/i }));
 
-    await waitFor(() => {
+    await vi.waitFor(() => {
       expect(
         screen.getByText("Username updated successfully"),
       ).toBeInTheDocument();
@@ -80,8 +80,9 @@ describe("UpdateUsernameForm", () => {
 
     vi.advanceTimersByTime(2000);
 
-    await waitFor(() => {
+    await vi.waitFor(() => {
       expect(mockNavigate).toHaveBeenCalledWith("/profile");
     });
+    vi.useRealTimers();
   });
 });

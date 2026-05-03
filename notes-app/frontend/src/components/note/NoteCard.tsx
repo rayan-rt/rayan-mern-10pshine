@@ -1,20 +1,10 @@
-import { Trash2, Edit3, Pin, Calendar } from "lucide-react";
+import { Edit3, Calendar } from "lucide-react";
 import type { INote } from "../../types/note.types";
 import DOMPurify from "dompurify";
-import { useNoteContext } from "../../contexts/note.context";
 import { Link } from "react-router-dom";
+import { PinNoteButton, DeleteNoteButton } from "./";
 
 export default function NoteCard({ note }: Readonly<{ note: INote }>) {
-  const { togglePin, deleteNote } = useNoteContext();
-
-  const handlePin = async () => {
-    await togglePin(note._id, !note.isPinned);
-  };
-
-  const handleDelete = async () => {
-    await deleteNote(note._id);
-  };
-
   // Human-readable generic date formatter
   const dateFormatted = new Date(note.updatedAt).toLocaleDateString("en-US", {
     month: "short",
@@ -38,18 +28,7 @@ export default function NoteCard({ note }: Readonly<{ note: INote }>) {
         >
           {note.title}
         </h3>
-        <button
-          onClick={handlePin}
-          className={`p-1.5 rounded-full transition-colors shrink-0 ${
-            note.isPinned ? "text-blue-600 bg-blue-50" : "text-gray-400"
-          }`}
-          title={note.isPinned ? "Pinned Note" : "Note"}
-        >
-          <Pin
-            className="w-4 h-4"
-            style={{ fill: note.isPinned ? "currentColor" : "none" }}
-          />
-        </button>
+        <PinNoteButton note={note} />
       </div>
 
       {/* Card Body - Content parsing DOMPurify carefully securing HTML */}
@@ -73,17 +52,11 @@ export default function NoteCard({ note }: Readonly<{ note: INote }>) {
         <div className="flex items-center gap-1.5">
           <Link
             to={`/edit-note/${note._id}`}
-            className="p-1.5 text-gray-400 rounded-lg focus:outline-none cursor-default"
+            className="p-1.5 text-gray-400 rounded-lg focus:outline-none cursor-pointer hover:bg-gray-100 hover:text-blue-600 transition-colors"
           >
             <Edit3 className="w-4 h-4" />
           </Link>
-          <button
-            onClick={handleDelete}
-            className="p-1.5 text-gray-400 rounded-lg focus:outline-none cursor-default"
-            title="Delete Note"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
+          <DeleteNoteButton note={note} />
         </div>
       </div>
     </div>
