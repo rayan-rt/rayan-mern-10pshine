@@ -28,7 +28,7 @@ describe("DeleteProfileButton", () => {
       deleteUser: mockDeleteUser,
       logout: mockLogout,
     });
-    vi.spyOn(window, "alert").mockImplementation(() => {});
+    vi.spyOn(globalThis, "alert").mockImplementation(() => {});
   });
 
   const renderComponent = () =>
@@ -48,7 +48,7 @@ describe("DeleteProfileButton", () => {
     fireEvent.click(initialDeleteBtn);
 
     // Confirmation dialog appears
-    expect(screen.getByText(/Are you absolutely sure/i)).toBeInTheDocument();
+    expect(screen.getByText(/Are you sure\?/i)).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /Yes, delete my account/i }),
     ).toBeInTheDocument();
@@ -64,9 +64,7 @@ describe("DeleteProfileButton", () => {
     fireEvent.click(screen.getByRole("button", { name: /Cancel/i }));
 
     // Confirm dialog disappears and initial button returns
-    expect(
-      screen.queryByText(/Are you absolutely sure/i),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/Are you sure\?/i)).not.toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /Delete Account/i }),
     ).toBeInTheDocument();
@@ -85,7 +83,7 @@ describe("DeleteProfileButton", () => {
 
     await waitFor(() => {
       expect(mockDeleteUser).toHaveBeenCalledTimes(1);
-      expect(window.alert).toHaveBeenCalledWith(
+      expect(globalThis.alert).toHaveBeenCalledWith(
         "Account deleted successfully!",
       );
       expect(mockLogout).toHaveBeenCalledTimes(1);

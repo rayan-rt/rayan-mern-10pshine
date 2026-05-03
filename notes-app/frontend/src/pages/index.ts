@@ -7,6 +7,10 @@ import ResetPasswordPage from "./ResetPasswordPage";
 
 import ProfilePage from "./ProfilePage";
 
+import CreateNotePage from "./CreateNotePage";
+import EditNotePage from "./EditNotePage";
+import NotesPage from "./NotesPage";
+
 export {
   SignupPage,
   HomePage,
@@ -15,4 +19,7 @@ export {
   ForgotPasswordPage,
   ResetPasswordPage,
   ProfilePage,
+  CreateNotePage,
+  EditNotePage,
+  NotesPage,
 };

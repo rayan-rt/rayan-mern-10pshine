@@ -8,6 +8,9 @@ import {
   Navigate,
 } from "react-router-dom";
 import {
+  CreateNotePage,
+  NotesPage,
+  EditNotePage,
   ForgotPasswordPage,
   HomePage,
   LoginPage,
@@ -129,6 +132,30 @@ function App() {
             element={
               <ProtectedRoute>
                 <ChangePasswordForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/create-note"
+            element={
+              <ProtectedRoute>
+                <CreateNotePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notes"
+            element={
+              <ProtectedRoute>
+                <NotesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/edit-note/:id"
+            element={
+              <ProtectedRoute>
+                <EditNotePage />
               </ProtectedRoute>
             }
           />

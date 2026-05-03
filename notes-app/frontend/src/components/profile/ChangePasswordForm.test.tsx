@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { BrowserRouter } from "react-router-dom";
 import ChangePasswordForm from "./ChangePasswordForm";
@@ -22,7 +22,6 @@ describe("ChangePasswordForm", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.useFakeTimers();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (useUserContext as any).mockReturnValue({
       user: { _id: "1", username: "testuser" },
@@ -57,7 +56,7 @@ describe("ChangePasswordForm", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /Change Password/i }));
 
-    await waitFor(() => {
+    await vi.waitFor(() => {
       expect(screen.getByText("Invalid old password")).toBeInTheDocument();
     });
   });
@@ -76,9 +75,10 @@ describe("ChangePasswordForm", () => {
       target: { value: "newpass" },
     });
 
+    vi.useFakeTimers();
     fireEvent.click(screen.getByRole("button", { name: /Change Password/i }));
 
-    await waitFor(() => {
+    await vi.waitFor(() => {
       expect(
         screen.getByText("Password updated successfully"),
       ).toBeInTheDocument();
@@ -86,8 +86,9 @@ describe("ChangePasswordForm", () => {
 
     vi.advanceTimersByTime(2000);
 
-    await waitFor(() => {
+    await vi.waitFor(() => {
       expect(mockNavigate).toHaveBeenCalledWith("/profile");
     });
+    vi.useRealTimers();
   });
 });
