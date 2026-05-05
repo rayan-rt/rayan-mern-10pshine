@@ -54,7 +54,7 @@ const getAllNotes: RequestHandler = asyncHandler(
       ];
     }
 
-    const notes = await Note.find(query).sort({ isPinned: -1, updatedAt: -1 });
+    const notes = await Note.find(query).sort({ isPinned: -1, createdAt: -1 });
 
     res
       .status(200)
