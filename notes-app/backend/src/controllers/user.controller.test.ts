@@ -14,6 +14,7 @@ import {
   deleteUser,
 } from "./user.controller.js";
 import { User } from "../models/user.model.js";
+import { Note } from "../models/note.model.js";
 import { mailHelper } from "../utils/mail.utils.js";
 // --
 
@@ -239,11 +240,14 @@ describe("User Controller - CRUD", () => {
   afterEach(() => sinon.restore());
 
   it("getCurrentUser should return user info", async () => {
-    const req = { user: { _id: "1", username: "u", email: "e" } } as any;
+    const req = {
+      user: { _id: "1", username: "u", email: "e", isVerified: true },
+    } as any;
     const res = {
       status: sinon.stub().returnsThis(),
       json: sinon.stub().returnsThis(),
     } as any;
+    sinon.stub(Note, "countDocuments").resolves(0);
     await getCurrentUser(req, res, sinon.spy());
     expect(res.status.calledWith(200)).to.be.true;
   });
@@ -273,12 +277,13 @@ describe("User Controller - CRUD", () => {
   });
 
   it("deleteUser should remove user", async () => {
-    const req = { params: { id: "1" } } as any;
+    const req = { user: { _id: "1" } } as any;
     const res = {
       status: sinon.stub().returnsThis(),
       json: sinon.stub().returnsThis(),
     } as any;
     sinon.stub(User, "findById").resolves({ _id: "1" });
+    sinon.stub(Note, "deleteMany").resolves();
     sinon.stub(User, "findByIdAndDelete").resolves();
     await deleteUser(req, res, sinon.spy());
     expect(res.status.calledWith(200)).to.be.true;
