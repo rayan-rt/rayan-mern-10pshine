@@ -33,8 +33,8 @@ export default function ExportNoteButton({ note }: Readonly<{ note: INote }>) {
 
     // Robust filename sanitization
     const safeTitle = note.title
-      .replace(/[<>:"/\\|?*]/g, "") // Remove illegal characters
-      .replace(/\s+/g, "_")
+      .replaceAll(/[<>:"/\\|?*]/g, "") // Remove illegal characters
+      .replaceAll(/\s+/g, "_")
       .substring(0, 100);
 
     const link = document.createElement("a");
