@@ -11,6 +11,8 @@ import CreateNotePage from "./CreateNotePage";
 import EditNotePage from "./EditNotePage";
 import NotesPage from "./NotesPage";
 
+import ExportAllNotePage from "./ExportAllNotePage";
+
 export {
   SignupPage,
   HomePage,
@@ -22,4 +24,5 @@ export {
   CreateNotePage,
   EditNotePage,
   NotesPage,
+  ExportAllNotePage,
 };

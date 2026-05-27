@@ -3,6 +3,7 @@ import NoteCard from "./NoteCard";
 import EditNoteForm from "./EditNoteForm";
 import DeleteNoteButton from "./DeleteNoteButton";
 import PinNoteButton from "./PinNoteButton";
+import ExportNoteButton from "./ExportNoteButton";
 
 export {
   CreateNoteForm,
@@ -10,4 +11,5 @@ export {
   EditNoteForm,
   DeleteNoteButton,
   PinNoteButton,
+  ExportNoteButton,
 };

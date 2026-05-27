@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { NoteCard } from "../components";
 import { useNoteContext } from "../contexts/note.context";
-import { Search, Plus } from "lucide-react";
+import { Search, Plus, ArrowUpFromLine } from "lucide-react";
 
 export default function NotesPage() {
   const { notes, readNotes, loading } = useNoteContext();
@@ -71,13 +71,22 @@ export default function NotesPage() {
             Manage and organize your personal thoughts securely.
           </p>
         </div>
-        <Link
-          to="/create-note"
-          className="inline-flex items-center px-5 py-2.5 bg-blue-600 border border-transparent rounded-xl font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-sm shadow-blue-200"
-        >
-          <Plus className="w-5 h-5 mr-2" />
-          Create Note
-        </Link>
+        <div className="flex gap-4">
+          <Link
+            to="/create-note"
+            className="inline-flex items-center px-5 py-2.5 bg-blue-600 border border-transparent rounded-xl font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-sm shadow-blue-200"
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            Create Note
+          </Link>
+          <Link
+            to="/export-all"
+            className="inline-flex items-center px-5 py-2.5 bg-blue-600 border border-transparent rounded-xl font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-sm shadow-blue-200"
+          >
+            <ArrowUpFromLine className="w-5 h-5 mr-2" />
+            Export All
+          </Link>
+        </div>
       </div>
 
       <div className="mb-10 relative max-w-xl">

@@ -9,10 +9,6 @@ const nav_links: NavLink[] = [
     href: "/notes",
   },
   {
-    title: "Pinned Notes",
-    href: "/pinned-notes",
-  },
-  {
     title: "Create a Note",
     href: "/create-note",
   },

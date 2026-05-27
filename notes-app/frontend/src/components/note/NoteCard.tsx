@@ -2,7 +2,7 @@ import { Edit3, Calendar } from "lucide-react";
 import type { INote } from "../../types/note.types";
 import DOMPurify from "dompurify";
 import { Link } from "react-router-dom";
-import { PinNoteButton, DeleteNoteButton } from "./";
+import { PinNoteButton, DeleteNoteButton, ExportNoteButton } from "./";
 
 export default function NoteCard({ note }: Readonly<{ note: INote }>) {
   // Human-readable generic date formatter
@@ -52,11 +52,13 @@ export default function NoteCard({ note }: Readonly<{ note: INote }>) {
         <div className="flex items-center gap-1.5">
           <Link
             to={`/edit-note/${note._id}`}
+            title="Edit Note"
             className="p-1.5 text-gray-400 rounded-lg focus:outline-none cursor-pointer hover:bg-gray-100 hover:text-blue-600 transition-colors"
           >
             <Edit3 className="w-4 h-4" />
           </Link>
           <DeleteNoteButton note={note} />
+          <ExportNoteButton note={note} />
         </div>
       </div>
     </div>

@@ -18,6 +18,7 @@ import {
   ResetPasswordPage,
   SignupPage,
   VerifyEmailPage,
+  ExportAllNotePage,
 } from "./pages";
 import { ChangePasswordForm, Navbar, UpdateUsernameForm } from "./components";
 // --
@@ -156,6 +157,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <EditNotePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/export-all"
+            element={
+              <ProtectedRoute>
+                <ExportAllNotePage />
               </ProtectedRoute>
             }
           />
